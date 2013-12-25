@@ -1,0 +1,8 @@
+Next
+- Create and maintain 32x32 array representing the canvas grid.
+	- 0 = no color, 1 = black
+- Draw squares instead of lines.
+
+Don't forget
+- Hotkeys
+	- Shift+click to erase, E to switch to eraser tool.
