@@ -4,6 +4,7 @@ $(document).ready(function() {
 	drawing.initPixelArray();
 	drawing.initCanvas();
 	drawing.initTools();
+	drawing.initColorPicker();
 });
 
 var drawing = {
@@ -19,6 +20,8 @@ var drawing = {
 	mCountPixelsY : 32,
 	//* Number of screen pixels per sprite 'pixel'.
 	mPixelSize : 10,
+
+	mSelTool : null,
 
 	//* 3D array representing the pixel grid.
 	mPxArr : [],
@@ -71,8 +74,24 @@ var drawing = {
 	},
 
 	initTools : function() {
+		drawing.mSelTool = drawing.PENCIL;
+
 		$('#a_tool_pencil').click({toolType: drawing.PENCIL}, drawing.onToolClick);
 		$('#a_tool_eraser').click({toolType: drawing.ERASER}, drawing.onToolClick);
+	},
+
+	initColorPicker : function() {
+		$('.color-box').colpick({
+			colorScheme:'dark',
+			layout:'rgbhex',
+			color:'000000',
+			onSubmit:function(hsb,hex,rgb,el) {
+				$(el).css('background-color', '#'+hex);
+				$(el).colpickHide();
+				console.log(rgb);
+				drawing.onSelectColor('('+rgb.r+','+rgb.g+','+rgb.b+',1)');
+			}
+		});
 	},
 
 	onMouseMoveOverCanvasDraw : function(e) {
@@ -91,10 +110,9 @@ var drawing = {
 			drawing.mPxArr[pxX][pxY] = drawing.mSelColor;
 
 			// draw sprite pixel
-			if(drawing.mSelColor == drawing.mTransColor) {
-				// is erasing
-				drawing.mContext.clearRect(pxX*drawing.mPixelSize, pxY*drawing.mPixelSize, drawing.mPixelSize, drawing.mPixelSize);
-			} else {
+			// first clear - necessary when using colors with less than full transparency
+			drawing.mContext.clearRect(pxX*drawing.mPixelSize, pxY*drawing.mPixelSize, drawing.mPixelSize, drawing.mPixelSize);
+			if(drawing.mSelTool != drawing.ERASER) {
 				// is drawing
 				drawing.mContext.fillRect(pxX*drawing.mPixelSize, pxY*drawing.mPixelSize, drawing.mPixelSize, drawing.mPixelSize);
 			}
@@ -104,7 +122,9 @@ var drawing = {
 	onToolClick : function(e) {
 		console.log('# onToolClick: '+e.data.toolType);
 
-		switch(e.data.toolType) {
+		drawing.mSelTool = e.data.toolType;
+
+		switch(drawing.mSelTool) {
 			case drawing.PENCIL:
 				drawing.onSelectColor(drawing.mPencilColor);
 				break;

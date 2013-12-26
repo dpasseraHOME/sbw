@@ -1,7 +1,8 @@
 Next
-- Erase.
 - Colors.
-- Rebuild from array.
+	x Select and draw w/ new color.
+	- Add used colors to selectable palette.
+- Rebuild drawing from array.
 
 Don't forget
 - Hotkeys
