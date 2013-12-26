@@ -3,12 +3,27 @@ canvas
 	cursor: crosshair;
 }
 
+.hidden
+{
+	display: none;
+}
+
+.clear-float
+{
+	clear: both;
+}
+
 .color-box
 {
-	float:left;
-	width:30px;
-	height:30px;
-	margin:5px;
-	border: 1px solid white;
 	background: black;
+	border: 1px solid white;
+	height: 30px;
+	width: 30px;
+}
+
+.color-palette-item
+{
+	float: left;
+	height: 20px;
+	width: 20px;
 }

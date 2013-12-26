@@ -4,11 +4,26 @@ canvas {
 }
 
 /* line 7, ../sass/stylesheet.scss */
+.hidden {
+  display: none;
+}
+
+/* line 12, ../sass/stylesheet.scss */
+.clear-float {
+  clear: both;
+}
+
+/* line 17, ../sass/stylesheet.scss */
 .color-box {
-  float: left;
-  width: 30px;
-  height: 30px;
-  margin: 5px;
-  border: 1px solid white;
   background: black;
+  border: 1px solid white;
+  height: 30px;
+  width: 30px;
+}
+
+/* line 25, ../sass/stylesheet.scss */
+.color-palette-item {
+  float: left;
+  height: 20px;
+  width: 20px;
 }

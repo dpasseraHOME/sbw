@@ -25,12 +25,14 @@ var drawing = {
 
 	//* 3D array representing the pixel grid.
 	mPxArr : [],
-	//* Hex value of transparent (erased) color. Hex transparencies range 00 - FF.
-	mTransColor : '(0, 0, 0, 0)',
-	//* Hex value of WIP pencil color.
-	mPencilColor : '(0, 0, 0, 1)',
-	//* Hex value of currently selected color.
+	//* RGBA value of transparent (erased) color. Hex transparencies range 00 - FF.
+	mTransColor : '(0,0,0,0)',
+	//* RGBA value of WIP pencil color.
+	mLastPencilColor : '(0,0,0,1)',
+	//* RGBA value of currently selected color.
 	mSelColor : null,
+	//* Array of RGBA values of colors used in sprite.
+	mUsedColorArr : [],
 
 	/**
 	*	Initialize grid with transparent pixels at all locations.
@@ -60,7 +62,7 @@ var drawing = {
 		drawing.mPixelSize = $('#canvas_draw').width() / drawing.mCountPixelsX;
 
 		// set initial selected color
-		drawing.onSelectColor(drawing.mPencilColor);
+		drawing.onSelectColor(drawing.mLastPencilColor);
 
 		$('#canvas_draw').mousemove(function(e) {
 			drawing.onMouseMoveOverCanvasDraw(e);
@@ -82,14 +84,17 @@ var drawing = {
 
 	initColorPicker : function() {
 		$('.color-box').colpick({
-			colorScheme:'dark',
-			layout:'rgbhex',
-			color:'000000',
-			onSubmit:function(hsb,hex,rgb,el) {
+			layout : 'rgbhex',
+			color : '000000',
+			onSubmit : function(hsb, hex, rgb, el) {
 				$(el).css('background-color', '#'+hex);
 				$(el).colpickHide();
-				console.log(rgb);
 				drawing.onSelectColor('('+rgb.r+','+rgb.g+','+rgb.b+',1)');
+			},
+			onChange: function(hsb, hex, rgb, fromSetColor) {
+				if(fromSetColor) {
+					$('.colpick_submit').click();
+				}
 			}
 		});
 	},
@@ -115,29 +120,58 @@ var drawing = {
 			if(drawing.mSelTool != drawing.ERASER) {
 				// is drawing
 				drawing.mContext.fillRect(pxX*drawing.mPixelSize, pxY*drawing.mPixelSize, drawing.mPixelSize, drawing.mPixelSize);
+				// check if color has already been added to palette
+				// if not, add to palette
+				if(drawing.mUsedColorArr.indexOf(drawing.mSelColor) == -1) {
+					drawing.mUsedColorArr.push(drawing.mSelColor);
+
+					var $el = $('.color-palette-item.temp').clone();
+					$('#color_palette').append($el);
+					$el.css('background', 'rgba'+drawing.mSelColor);
+					$el.data('rgba-str', drawing.mSelColor);
+					$el.removeClass('hidden').removeClass('temp');
+					$el.click(function(e) {
+						$('.color-box').colpickSetColor(utils.rgbaStrToRGBObj($(e.target).data('rgba-str')), true);
+					})
+				}
 			}
 		}
 	},
 
 	onToolClick : function(e) {
-		console.log('# onToolClick: '+e.data.toolType);
+		// console.log('# onToolClick: '+e.data.toolType);
 
 		drawing.mSelTool = e.data.toolType;
 
 		switch(drawing.mSelTool) {
 			case drawing.PENCIL:
-				drawing.onSelectColor(drawing.mPencilColor);
+				drawing.onSelectColor(drawing.mLastPencilColor, false);
 				break;
 			case drawing.ERASER:
-				drawing.onSelectColor(drawing.mTransColor);
+				drawing.onSelectColor(drawing.mTransColor, true);
 				break;
 		};
 	},
 
-	onSelectColor : function(rgbaStr) {
-		console.log('# onSelectColor: '+rgbaStr);
+	onSelectColor : function(rgbaStr, isEraser) {
+		// console.log('# onSelectColor: '+rgbaStr);
+		if(isEraser) {
+			drawing.mLastPencilColor = drawing.mSelColor;
+		}
+
 		drawing.mSelColor = rgbaStr;
 		drawing.mContext.fillStyle = 'rgba'+rgbaStr;
+	}
+
+};
+
+var utils = {
+
+	rgbaStrToRGBObj : function(rgbaStr) {
+		var str = rgbaStr.substring(1, rgbaStr.length-1);
+		var strArr = str.split(',');
+
+		return {r: strArr[0], g: strArr[1], b: strArr[2], a: strArr[3]};
 	}
 
 };
