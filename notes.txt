@@ -1,6 +1,5 @@
 Next
-- Rebuild drawing from array.
-- Apply tool on mousedown, in addition to mousemove.
+w Apply tool on mousedown, in addition to mousemove.
 - Deactivate selected tool button.
 
 Don't forget

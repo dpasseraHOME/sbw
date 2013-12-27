@@ -67,8 +67,9 @@ var drawing = {
 		$('#canvas_draw').mousemove(function(e) {
 			drawing.onMouseMoveOverCanvasDraw(e);
 		});
-		$('#canvas_draw').mousedown(function() {
+		$('#canvas_draw').mousedown(function(e) {
 			drawing.mIsMouseDown = true;
+			// $('#canvas_draw').mousemove();
 		});
 		$(document).mouseup(function() {
 			drawing.mIsMouseDown = false;
@@ -80,6 +81,8 @@ var drawing = {
 
 		$('#a_tool_pencil').click({toolType: drawing.PENCIL}, drawing.onToolClick);
 		$('#a_tool_eraser').click({toolType: drawing.ERASER}, drawing.onToolClick);
+
+		$('#a_test_redraw').click(drawing.testRedraw);
 	},
 
 	initColorPicker : function() {
@@ -161,6 +164,32 @@ var drawing = {
 
 		drawing.mSelColor = rgbaStr;
 		drawing.mContext.fillStyle = 'rgba'+rgbaStr;
+	},
+
+	testRedraw : function() {
+		drawing.mContext.clearRect(0, 0, 320, 320);
+		application.drawSavedCanvas(drawing.mPxArr, drawing.mContext);
+	}
+
+};
+
+var application = {
+
+	saveCanvas : function() {
+
+	},
+
+	drawSavedCanvas : function(pxArr, context) {
+		var cw = pxArr.length;
+		var ch = pxArr.length;
+		var i,j;
+
+		for(i=0; i<cw; i++) {
+			for(j=0; j<ch; j++) {
+				context.fillStyle = 'rgba'+pxArr[i][j];
+				context.fillRect(i*drawing.mPixelSize, j*drawing.mPixelSize, drawing.mPixelSize, drawing.mPixelSize);
+			}
+		}
 	}
 
 };
