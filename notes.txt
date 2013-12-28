@@ -1,8 +1,11 @@
 Next
-w Apply tool on mousedown, in addition to mousemove.
+- Apply tool on mousedown, in addition to mousemove.
 - Deactivate selected tool button.
 
 Don't forget
 - Hotkeys
 	- Shift+click to erase, E to switch to eraser tool.
 - User initiated check for orphaned colors in used-color palette.
+
+Bugs
+- 

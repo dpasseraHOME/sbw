@@ -1,5 +1,6 @@
 canvas
 {
+	border: 1px solid lightgrey;
 	cursor: crosshair;
 }
 
@@ -21,9 +22,15 @@ canvas
 	width: 30px;
 }
 
-.color-palette-item
+.color-palette
 {
-	float: left;
-	height: 20px;
-	width: 20px;
+	height: 50px;
+
+	.color-palette-item
+	{
+		float: left;
+		height: 20px;
+		margin: 5px 2px;
+		width: 20px;
+	}
 }

@@ -9,3 +9,10 @@
 2013-12-26 11:28:49 overwrite stylesheets/stylesheet.css 
 2013-12-26 11:32:25 overwrite stylesheets/stylesheet.css 
 2013-12-26 11:33:13 overwrite stylesheets/stylesheet.css 
+2013-12-27 19:27:26     error sass/stylesheet.scss (Line 4: Invalid CSS after "	cursor": expected ";", was ": crosshair;")
+2013-12-27 19:27:26 overwrite stylesheets/stylesheet.css 
+2013-12-27 19:27:35 overwrite stylesheets/stylesheet.css 
+2013-12-27 19:30:38     error sass/stylesheet.scss (Line 29: Invalid CSS after "	height: 50px": expected ";", was ".color-palette-...")
+2013-12-27 19:30:38 overwrite stylesheets/stylesheet.css 
+2013-12-27 19:31:15 overwrite stylesheets/stylesheet.css 
+2013-12-27 19:31:42 identical stylesheets/stylesheet.css 

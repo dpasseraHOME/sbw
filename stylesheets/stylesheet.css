@@ -1,19 +1,20 @@
 /* line 2, ../sass/stylesheet.scss */
 canvas {
+  border: 1px solid lightgrey;
   cursor: crosshair;
 }
 
-/* line 7, ../sass/stylesheet.scss */
+/* line 8, ../sass/stylesheet.scss */
 .hidden {
   display: none;
 }
 
-/* line 12, ../sass/stylesheet.scss */
+/* line 13, ../sass/stylesheet.scss */
 .clear-float {
   clear: both;
 }
 
-/* line 17, ../sass/stylesheet.scss */
+/* line 18, ../sass/stylesheet.scss */
 .color-box {
   background: black;
   border: 1px solid white;
@@ -21,9 +22,14 @@ canvas {
   width: 30px;
 }
 
-/* line 25, ../sass/stylesheet.scss */
-.color-palette-item {
+/* line 26, ../sass/stylesheet.scss */
+.color-palette {
+  height: 50px;
+}
+/* line 30, ../sass/stylesheet.scss */
+.color-palette .color-palette-item {
   float: left;
   height: 20px;
+  margin: 5px 2px;
   width: 20px;
 }

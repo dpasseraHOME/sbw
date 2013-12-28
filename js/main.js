@@ -129,7 +129,7 @@ var drawing = {
 					drawing.mUsedColorArr.push(drawing.mSelColor);
 
 					var $el = $('.color-palette-item.temp').clone();
-					$('#color_palette').append($el);
+					$('.color-palette').append($el);
 					$el.css('background', 'rgba'+drawing.mSelColor);
 					$el.data('rgba-str', drawing.mSelColor);
 					$el.removeClass('hidden').removeClass('temp');
