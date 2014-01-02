@@ -84,6 +84,7 @@ var drawing = {
 		$('#b_tool_eraser').click({toolType: drawing.ERASER}, drawing.onToolClick);
 
 		$('#b_test_redraw').click(drawing.testRedraw);
+		$('#b_save_sheet').click(application.saveSpriteSheet);
 	},
 
 	initColorPicker : function() {
@@ -182,8 +183,38 @@ var drawing = {
 
 var application = {
 
-	saveCanvas : function() {
+	saveSpriteSheet : function() {
+		// console.log(utils.twoDArrToStr(drawing.mPxArr));
+		var jsonObj = {};
 
+		jsonObj.metadata = {};
+		jsonObj.metadata.name = 'test_sheet';
+
+		jsonObj.actions = {};
+		jsonObj.actions = [];
+
+		var action = {};
+		action.metadata = {};
+		action.metadata.name = 'action_1';
+		action.sprites = [];
+
+		var sprite = {};
+		sprite.metadata = {};
+		sprite.metadata.name = 'sprite_1';
+		sprite.pixel_array = utils.twoDArrToStr(drawing.mPxArr);
+
+		action.sprites.push(sprite);
+
+		jsonObj.actions.push(action);
+
+		var jsonText = JSON.stringify(jsonObj);
+
+		var blob = new Blob([jsonText], {type: "text/plain;charset=utf-8"});
+		saveAs(blob, 'test.txt');
+	},
+
+	loadSpriteSheet : function() {
+		
 	},
 
 	drawSavedCanvas : function(pxArr, context) {
@@ -208,6 +239,23 @@ var utils = {
 		var strArr = str.split(',');
 
 		return {r: strArr[0], g: strArr[1], b: strArr[2], a: strArr[3]};
+	},
+
+	twoDArrToStr : function(arr) {
+		var str = '[';
+
+		for(var i=0; i<arr.length; i++) {
+			str += '['+arr[i].toString()+'],';
+		}
+
+		str = str.substr(0, str.length-1);
+		str += ']';
+
+		return str;
+	},
+
+	strToTwoDArr : function(str) {
+
 	}
 
 };

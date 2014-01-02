@@ -1,11 +1,38 @@
 Next
-c Apply tool on mousedown, in addition to mousemove.
-c Deactivate selected tool button.
+w Save as JSON to computer (single sprite only).
+	c Convert pixel array to string.
+	c Construct test JSON.
+	c Save JSON as blob to text file and download.
+- Load and display JSON from computer.
+	- Convert string to pixel array.
 
 Don't forget
 - Hotkeys
 	- Shift+click to erase, E to switch to eraser tool.
 - User initiated check for orphaned colors in used-color palette.
+- Dropbox integration for sharing and CLOUD!!!!!! features.
+* Use canvas-ToBlob to save entire sprite sheet.
 
 Bugs
 - 
+
+Save data structure
+--------------------
+Sprite sheet
+--Metadata
+----Name
+----Number_of_actions
+--Action 1
+----Metadata
+------Name
+------Number_of_actions
+----Sprite 1
+----Sprite 2
+----Sprite 3
+--Action 2
+----Metadata
+------Name
+------Number_of_actions
+----Sprite 1
+----Sprite 2
+----Sprite 3
