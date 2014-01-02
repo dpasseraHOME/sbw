@@ -1,6 +1,6 @@
 Next
-- Apply tool on mousedown, in addition to mousemove.
-- Deactivate selected tool button.
+c Apply tool on mousedown, in addition to mousemove.
+c Deactivate selected tool button.
 
 Don't forget
 - Hotkeys

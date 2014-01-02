@@ -69,7 +69,8 @@ var drawing = {
 		});
 		$('#canvas_draw').mousedown(function(e) {
 			drawing.mIsMouseDown = true;
-			// $('#canvas_draw').mousemove();
+			// console.log(e);
+			drawing.onMouseMoveOverCanvasDraw(e);
 		});
 		$(document).mouseup(function() {
 			drawing.mIsMouseDown = false;
@@ -79,10 +80,10 @@ var drawing = {
 	initTools : function() {
 		drawing.mSelTool = drawing.PENCIL;
 
-		$('#a_tool_pencil').click({toolType: drawing.PENCIL}, drawing.onToolClick);
-		$('#a_tool_eraser').click({toolType: drawing.ERASER}, drawing.onToolClick);
+		$('#b_tool_pencil').click({toolType: drawing.PENCIL}, drawing.onToolClick);
+		$('#b_tool_eraser').click({toolType: drawing.ERASER}, drawing.onToolClick);
 
-		$('#a_test_redraw').click(drawing.testRedraw);
+		$('#b_test_redraw').click(drawing.testRedraw);
 	},
 
 	initColorPicker : function() {
@@ -144,16 +145,22 @@ var drawing = {
 	onToolClick : function(e) {
 		// console.log('# onToolClick: '+e.data.toolType);
 
-		drawing.mSelTool = e.data.toolType;
+		if(e.data.toolType != drawing.mSelTool) {
+			drawing.mSelTool = e.data.toolType;
 
-		switch(drawing.mSelTool) {
-			case drawing.PENCIL:
-				drawing.onSelectColor(drawing.mLastPencilColor, false);
-				break;
-			case drawing.ERASER:
-				drawing.onSelectColor(drawing.mTransColor, true);
-				break;
-		};
+			$('.tool-button').removeAttr('disabled');
+
+			switch(drawing.mSelTool) {
+				case drawing.PENCIL:
+					drawing.onSelectColor(drawing.mLastPencilColor, false);
+					$('#b_tool_pencil').attr('disabled','disabled');
+					break;
+				case drawing.ERASER:
+					drawing.onSelectColor(drawing.mTransColor, true);
+					$('#b_tool_eraser').attr('disabled','disabled');
+					break;
+			};
+		}
 	},
 
 	onSelectColor : function(rgbaStr, isEraser) {

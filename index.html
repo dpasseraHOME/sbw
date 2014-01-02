@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>Sprite Builder test</title>
+		<title>Sprite Maker test</title>
 
 		<link rel="stylesheet" href="stylesheets/stylesheet.css" />
 		<link rel="stylesheet" href="css/colpick.css" />
@@ -17,9 +17,9 @@
 
 	<body>
 		<div id="container">
-			<p><a href="#" id="a_tool_pencil">Pencil</a></p>
-			<p><a href="#" id="a_tool_eraser">Erase</a></p>
-			<p><a href="#" id="a_test_redraw">Test redraw</a></p>
+			<p><button class="tool-button" id="b_tool_pencil" disabled="disabled">Pencil</button></p>
+			<p><button class="tool-button" id="b_tool_eraser">Erase</button></p>
+			<p><button id="b_test_redraw">Test redraw</button></p>
 
 			<div class="color-box"></div>
 
@@ -27,7 +27,7 @@
 			<div class="clear-float"></div>
 
 			<canvas id="canvas_draw" width="320" height="320">
-				<p>Sorry, but your browser is currently unsupported by Sprite Builder. Please try the latest version of Firefox:</p>
+				<p>Sorry, but your browser is currently unsupported by Sprite Maker. Please try the latest version of Firefox:</p>
 				<a href="http://www.mozilla.com">Firefox</a>
 			</canvas>
 		</div>
