@@ -1,11 +1,77 @@
 $(document).ready(function() {
 	console.log('!! ready');
 
+	application.initControls();
+
 	drawing.initPixelArray();
 	drawing.initCanvas();
 	drawing.initTools();
 	drawing.initColorPicker();
 });
+
+var application = {
+
+	initControls : function() {
+		$('#i_choose_file').change(application.loadSpriteSheet);
+	},
+
+	saveSpriteSheet : function() {
+		// console.log(utils.twoDArrToStr(drawing.mPxArr));
+		var jsonObj = {};
+
+		jsonObj.metadata = {};
+		jsonObj.metadata.name = 'test_sheet';
+
+		jsonObj.actions = {};
+		jsonObj.actions = [];
+
+		var action = {};
+		action.metadata = {};
+		action.metadata.name = 'action_1';
+		action.sprites = [];
+
+		var sprite = {};
+		sprite.metadata = {};
+		sprite.metadata.name = 'sprite_1';
+		sprite.pixel_array = utils.twoDArrToStr(drawing.mPxArr);
+
+		action.sprites.push(sprite);
+
+		jsonObj.actions.push(action);
+
+		var jsonText = JSON.stringify(jsonObj);
+
+		var blob = new Blob([jsonText], {type: "text/plain;charset=utf-8"});
+		saveAs(blob, 'test.txt');
+	},
+
+	loadSpriteSheet : function(e) {
+		console.log('# onChangeChooseFile');
+		var f = e.target.files[0];
+		var r = new FileReader();
+		r.onload = function(e) {
+			var jsonObj = JSON.parse(e.target.result);
+			drawing.clearCanvas(drawing.mContext);
+			application.drawSavedCanvas(utils.strToTwoDArr(jsonObj.actions[0].sprites[0].pixel_array), drawing.mContext);
+		};
+		r.readAsText(f);
+	},
+
+	drawSavedCanvas : function(pxArr, context) {
+		console.log('# drawSavedCanvas');
+		var cw = pxArr.length;
+		var ch = pxArr.length;
+		var i,j;
+
+		for(i=0; i<cw; i++) {
+			for(j=0; j<ch; j++) {
+				context.fillStyle = 'rgba'+pxArr[i][j];
+				context.fillRect(i*drawing.mPixelSize, j*drawing.mPixelSize, drawing.mPixelSize, drawing.mPixelSize);
+			}
+		}
+	}
+
+};
 
 var drawing = {
 
@@ -175,59 +241,12 @@ var drawing = {
 	},
 
 	testRedraw : function() {
-		drawing.mContext.clearRect(0, 0, 320, 320);
+		drawing.clearCanvas(drawing.mContext);
 		application.drawSavedCanvas(drawing.mPxArr, drawing.mContext);
-	}
-
-};
-
-var application = {
-
-	saveSpriteSheet : function() {
-		// console.log(utils.twoDArrToStr(drawing.mPxArr));
-		var jsonObj = {};
-
-		jsonObj.metadata = {};
-		jsonObj.metadata.name = 'test_sheet';
-
-		jsonObj.actions = {};
-		jsonObj.actions = [];
-
-		var action = {};
-		action.metadata = {};
-		action.metadata.name = 'action_1';
-		action.sprites = [];
-
-		var sprite = {};
-		sprite.metadata = {};
-		sprite.metadata.name = 'sprite_1';
-		sprite.pixel_array = utils.twoDArrToStr(drawing.mPxArr);
-
-		action.sprites.push(sprite);
-
-		jsonObj.actions.push(action);
-
-		var jsonText = JSON.stringify(jsonObj);
-
-		var blob = new Blob([jsonText], {type: "text/plain;charset=utf-8"});
-		saveAs(blob, 'test.txt');
 	},
 
-	loadSpriteSheet : function() {
-		
-	},
-
-	drawSavedCanvas : function(pxArr, context) {
-		var cw = pxArr.length;
-		var ch = pxArr.length;
-		var i,j;
-
-		for(i=0; i<cw; i++) {
-			for(j=0; j<ch; j++) {
-				context.fillStyle = 'rgba'+pxArr[i][j];
-				context.fillRect(i*drawing.mPixelSize, j*drawing.mPixelSize, drawing.mPixelSize, drawing.mPixelSize);
-			}
-		}
+	clearCanvas : function(context) {
+		context.clearRect(0, 0, 320, 320);
 	}
 
 };
@@ -255,7 +274,17 @@ var utils = {
 	},
 
 	strToTwoDArr : function(str) {
+		str = str.replace(/],/g, ']**');
+		var pxArr = str.split('**');
 
+		var len = pxArr.length;
+
+		for(var i=0; i<len; i++) {
+			pxArr[i] = pxArr[i].replace(/\),/g, ')**');
+			pxArr[i] = pxArr[i].split('**');
+		}
+
+		return pxArr;
 	}
 
 };

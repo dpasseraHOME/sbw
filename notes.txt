@@ -1,10 +1,15 @@
 Next
-w Save as JSON to computer (single sprite only).
-	c Convert pixel array to string.
-	c Construct test JSON.
-	c Save JSON as blob to text file and download.
 - Load and display JSON from computer.
+	c Open file.
+	w Convert file to JSON object.
 	- Convert string to pixel array.
+		- replace '],' with ']**'
+		- split at '**'
+		- iterate through resulting array
+			- replace '),' with ')**'
+			- split at '**'
+	- Draw pixel array on screen.
+- Move drawSavedCanvas into drawing and rename.
 
 Don't forget
 - Hotkeys
@@ -20,13 +25,14 @@ Save data structure
 --------------------
 Sprite sheet
 --Metadata
-----Name
-----Number_of_actions
+----Name (str)
+----Number_of_actions (int)
+----Sprite_dimensions ([int, int])
 --Action 1
 ----Metadata
-------Name
-------Number_of_actions
-----Sprite 1
+------Name (str)
+------Number_of_actions (int)
+----Sprite 1 ([(int, int, int)])
 ----Sprite 2
 ----Sprite 3
 --Action 2
@@ -36,3 +42,5 @@ Sprite sheet
 ----Sprite 1
 ----Sprite 2
 ----Sprite 3
+
+jsonObj.actions[i].sprites[j].pixel_array
