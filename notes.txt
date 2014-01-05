@@ -1,5 +1,8 @@
 Next
-- Move drawSavedCanvas into drawing and rename.
+c Move drawSavedCanvas into drawing and rename.
+w Add colors from saved canvas to palette.
+	w Clear colors.
+	- Add colors
 - Create extension other than .txt and filter file list appropriately.
 - Checkerboard background.
 - Multiple frames in action.
@@ -17,7 +20,7 @@ Don't forget
 - Dropbox integration for sharing and CLOUD!!!!!! features.
 
 Bugs
-* Check black dot in corner of loaded canvas.
+* 
 
 Save data structure
 --------------------

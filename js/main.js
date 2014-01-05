@@ -51,23 +51,9 @@ var application = {
 		r.onload = function(e) {
 			var jsonObj = JSON.parse(e.target.result);
 			drawing.clearCanvas(drawing.mContext);
-			application.drawSavedCanvas(jsonObj.actions[0].sprites[0].pixel_array, drawing.mContext);
+			drawing.drawCanvasFromPixelArray(jsonObj.actions[0].sprites[0].pixel_array, drawing.mContext);
 		};
 		r.readAsText(f);
-	},
-
-	drawSavedCanvas : function(pxArr, context) {
-		console.log('# drawSavedCanvas');
-		var cw = pxArr.length;
-		var ch = pxArr.length;
-		var i,j;
-
-		for(i=0; i<cw; i++) {
-			for(j=0; j<ch; j++) {
-				context.fillStyle = 'rgba'+pxArr[i][j];
-				context.fillRect(i*drawing.mPixelSize, j*drawing.mPixelSize, drawing.mPixelSize, drawing.mPixelSize);
-			}
-		}
 	}
 
 };
@@ -148,7 +134,6 @@ var drawing = {
 		$('#b_tool_pencil').click({toolType: drawing.PENCIL}, drawing.onToolClick);
 		$('#b_tool_eraser').click({toolType: drawing.ERASER}, drawing.onToolClick);
 
-		$('#b_test_redraw').click(drawing.testRedraw);
 		$('#b_save_sheet').click(application.saveSpriteSheet);
 	},
 
@@ -190,20 +175,9 @@ var drawing = {
 			if(drawing.mSelTool != drawing.ERASER) {
 				// is drawing
 				drawing.mContext.fillRect(pxX*drawing.mPixelSize, pxY*drawing.mPixelSize, drawing.mPixelSize, drawing.mPixelSize);
-				// check if color has already been added to palette
-				// if not, add to palette
-				if(drawing.mUsedColorArr.indexOf(drawing.mSelColor) == -1) {
-					drawing.mUsedColorArr.push(drawing.mSelColor);
-
-					var $el = $('.color-palette-item.temp').clone();
-					$('.color-palette').append($el);
-					$el.css('background', 'rgba'+drawing.mSelColor);
-					$el.data('rgba-str', drawing.mSelColor);
-					$el.removeClass('hidden').removeClass('temp');
-					$el.click(function(e) {
-						$('.color-box').colpickSetColor(utils.rgbaStrToRGBObj($(e.target).data('rgba-str')), true);
-					})
-				}
+				
+				// attempt to add color to palette
+				drawing.addColorToPalette(drawing.mSelColor);
 			}
 		}
 	},
@@ -236,13 +210,42 @@ var drawing = {
 		drawing.mContext.fillStyle = 'rgba'+rgbaStr;
 	},
 
-	testRedraw : function() {
-		drawing.clearCanvas(drawing.mContext);
-		application.drawSavedCanvas(drawing.mPxArr, drawing.mContext);
-	},
-
 	clearCanvas : function(context) {
 		context.clearRect(0, 0, 320, 320);
+	},
+
+	drawCanvasFromPixelArray : function(pxArr, context) {
+		var cw = pxArr.length;
+		var ch = pxArr.length;
+		var i,j;
+
+		// clear color palette in preparation of adding colors used in pxArr
+		drawing.mUsedColorArr = [];
+		$('.color-palette').empty();
+
+		for(i=0; i<cw; i++) {
+			for(j=0; j<ch; j++) {
+				context.fillStyle = 'rgba'+pxArr[i][j];
+				context.fillRect(i*drawing.mPixelSize, j*drawing.mPixelSize, drawing.mPixelSize, drawing.mPixelSize);
+				// add color to palette
+				drawing.addColorToPalette(pxArr[i][j]);
+			}
+		}
+	},
+
+	addColorToPalette : function(colorStr) {
+		if(colorStr != drawing.mTransColor && drawing.mUsedColorArr.indexOf(colorStr) == -1) {
+			drawing.mUsedColorArr.push(colorStr);
+
+			var $el = $('.color-palette-item.temp').clone();
+			$('.color-palette').append($el);
+			$el.css('background', 'rgba'+colorStr);
+			$el.data('rgba-str', colorStr);
+			$el.removeClass('hidden').removeClass('temp');
+			$el.click(function(e) {
+				$('.color-box').colpickSetColor(utils.rgbaStrToRGBObj($(e.target).data('rgba-str')), true);
+			})
+		}
 	}
 
 };
