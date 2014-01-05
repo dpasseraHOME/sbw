@@ -1,25 +1,23 @@
 Next
-- Load and display JSON from computer.
-	c Open file.
-	w Convert file to JSON object.
-	- Convert string to pixel array.
-		- replace '],' with ']**'
-		- split at '**'
-		- iterate through resulting array
-			- replace '),' with ')**'
-			- split at '**'
-	- Draw pixel array on screen.
 - Move drawSavedCanvas into drawing and rename.
+- Create extension other than .txt and filter file list appropriately.
+- Checkerboard background.
+- Multiple frames in action.
+- Front page
+	- Create new sheet.
+	- Load existing sheet.
+- Sprite sheet front page
+	- Create new action.
+	- Edit existing action.
 
 Don't forget
 - Hotkeys
 	- Shift+click to erase, E to switch to eraser tool.
 - User initiated check for orphaned colors in used-color palette.
 - Dropbox integration for sharing and CLOUD!!!!!! features.
-* Use canvas-ToBlob to save entire sprite sheet.
 
 Bugs
-- 
+* Check black dot in corner of loaded canvas.
 
 Save data structure
 --------------------

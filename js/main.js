@@ -16,7 +16,6 @@ var application = {
 	},
 
 	saveSpriteSheet : function() {
-		// console.log(utils.twoDArrToStr(drawing.mPxArr));
 		var jsonObj = {};
 
 		jsonObj.metadata = {};
@@ -33,7 +32,7 @@ var application = {
 		var sprite = {};
 		sprite.metadata = {};
 		sprite.metadata.name = 'sprite_1';
-		sprite.pixel_array = utils.twoDArrToStr(drawing.mPxArr);
+		sprite.pixel_array = drawing.mPxArr;
 
 		action.sprites.push(sprite);
 
@@ -52,7 +51,7 @@ var application = {
 		r.onload = function(e) {
 			var jsonObj = JSON.parse(e.target.result);
 			drawing.clearCanvas(drawing.mContext);
-			application.drawSavedCanvas(utils.strToTwoDArr(jsonObj.actions[0].sprites[0].pixel_array), drawing.mContext);
+			application.drawSavedCanvas(jsonObj.actions[0].sprites[0].pixel_array, drawing.mContext);
 		};
 		r.readAsText(f);
 	},
@@ -210,8 +209,6 @@ var drawing = {
 	},
 
 	onToolClick : function(e) {
-		// console.log('# onToolClick: '+e.data.toolType);
-
 		if(e.data.toolType != drawing.mSelTool) {
 			drawing.mSelTool = e.data.toolType;
 
@@ -231,7 +228,6 @@ var drawing = {
 	},
 
 	onSelectColor : function(rgbaStr, isEraser) {
-		// console.log('# onSelectColor: '+rgbaStr);
 		if(isEraser) {
 			drawing.mLastPencilColor = drawing.mSelColor;
 		}
@@ -258,33 +254,6 @@ var utils = {
 		var strArr = str.split(',');
 
 		return {r: strArr[0], g: strArr[1], b: strArr[2], a: strArr[3]};
-	},
-
-	twoDArrToStr : function(arr) {
-		var str = '[';
-
-		for(var i=0; i<arr.length; i++) {
-			str += '['+arr[i].toString()+'],';
-		}
-
-		str = str.substr(0, str.length-1);
-		str += ']';
-
-		return str;
-	},
-
-	strToTwoDArr : function(str) {
-		str = str.replace(/],/g, ']**');
-		var pxArr = str.split('**');
-
-		var len = pxArr.length;
-
-		for(var i=0; i<len; i++) {
-			pxArr[i] = pxArr[i].replace(/\),/g, ')**');
-			pxArr[i] = pxArr[i].split('**');
-		}
-
-		return pxArr;
 	}
 
 };
