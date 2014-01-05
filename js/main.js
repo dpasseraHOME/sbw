@@ -41,11 +41,10 @@ var application = {
 		var jsonText = JSON.stringify(jsonObj);
 
 		var blob = new Blob([jsonText], {type: "text/plain;charset=utf-8"});
-		saveAs(blob, 'test.txt');
+		saveAs(blob, 'test.sbs');
 	},
 
 	loadSpriteSheet : function(e) {
-		console.log('# onChangeChooseFile');
 		var f = e.target.files[0];
 		var r = new FileReader();
 		r.onload = function(e) {
@@ -225,6 +224,7 @@ var drawing = {
 
 		for(i=0; i<cw; i++) {
 			for(j=0; j<ch; j++) {
+				drawing.mPxArr[i][j] = pxArr[i][j];
 				context.fillStyle = 'rgba'+pxArr[i][j];
 				context.fillRect(i*drawing.mPixelSize, j*drawing.mPixelSize, drawing.mPixelSize, drawing.mPixelSize);
 				// add color to palette

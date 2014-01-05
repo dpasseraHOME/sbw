@@ -1,10 +1,7 @@
 Next
-c Move drawSavedCanvas into drawing and rename.
-w Add colors from saved canvas to palette.
-	w Clear colors.
-	- Add colors
-- Create extension other than .txt and filter file list appropriately.
-- Checkerboard background.
+c Create extension other than .txt and filter file list appropriately.
+c Fixes bug with saving drawing created from loaded file.
+w Checkerboard background.
 - Multiple frames in action.
 - Front page
 	- Create new sheet.
@@ -20,7 +17,7 @@ Don't forget
 - Dropbox integration for sharing and CLOUD!!!!!! features.
 
 Bugs
-* 
+*
 
 Save data structure
 --------------------
