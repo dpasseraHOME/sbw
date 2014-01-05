@@ -34,3 +34,11 @@ canvas
 		width: 20px;
 	}
 }
+
+.canvas-container
+{
+	&>*
+	{
+		position: absolute;
+	}
+}

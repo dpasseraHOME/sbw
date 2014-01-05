@@ -1,7 +1,6 @@
 Next
-c Create extension other than .txt and filter file list appropriately.
-c Fixes bug with saving drawing created from loaded file.
-w Checkerboard background.
+c Checkerboard background.
+w Refactor as object-oriented. Action objects, frame objects.
 - Multiple frames in action.
 - Front page
 	- Create new sheet.

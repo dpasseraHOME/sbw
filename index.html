@@ -25,15 +25,22 @@
 			<p><button id="b_save_sheet">Save sprite sheet</button></p>
 			<p><input type="file" id="i_choose_file" name="file" accept=".sbs" /></p>
 
+			<p><button id="b_toggle_checkerboard">Checkerboard off</button></p>
+
 			<div class="color-box"></div>
 
 			<div class="color-palette"></div>
 			<div class="clear-float"></div>
 
-			<canvas id="canvas_draw" width="320" height="320">
-				<p>Sorry, but your browser is currently unsupported by Sprite Maker. Please try the latest version of Firefox:</p>
-				<a href="http://www.mozilla.com">Firefox</a>
-			</canvas>
+			<div class="canvas-container">
+				<canvas id="canvas_checkerboard" width="320" height="320">
+				</canvas>
+
+				<canvas id="canvas_draw" width="320" height="320">
+					<p>Sorry, but your browser is currently unsupported by Sprite Maker. Please try the latest version of Firefox:</p>
+					<a href="http://www.mozilla.com">Firefox</a>
+				</canvas>
+			</div>
 		</div>
 
 		<div class='color-palette-item temp hidden'></div>
