@@ -1,5 +1,6 @@
 Next
 c Checkerboard background.
+	c Split each square into quarters.
 w Refactor as object-oriented. Action objects, frame objects.
 - Multiple frames in action.
 - Front page
