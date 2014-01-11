@@ -1,77 +1,75 @@
-var frame = {
+function frame() {
 
-	PENCIL : 'pencil',
-	ERASER : 'eraser',
+	this.PENCIL = 'pencil';
+	this.ERASER = 'eraser';
 	// checkerboard (transparency) rgba
-	CHECK_LT_COLOR : '(254,254,254,1)',
-	CHECK_DK_COLOR : '(201,201,201,1)',
+	this.CHECK_LT_COLOR = '(254,254,254,1)';
+	this.CHECK_DK_COLOR = '(201,201,201,1)';
 
-	mContext : null,
-	mIsLineStarted : false,
-	mIsMouseDown : false,
+	this.mContext = null;
+	this.mIsLineStarted = false;
+	this.mIsMouseDown = false;
 	//* Number of sprite 'pixels' wide and high.
-	mCountPixelsX : 32,
-	mCountPixelsY : 32,
+	this.mCountPixelsX = 32;
+	this.mCountPixelsY = 32;
 	//* Number of screen pixels per sprite 'pixel'.
-	mPixelSize : 10,
+	this.mPixelSize = 10;
 
-	mSelTool : null,
+	this.mSelTool = null;
 
 	//* 3D array representing the pixel grid.
-	mPxArr : [],
+	this.mPxArr = [];
 	//* RGBA value of transparent (erased) color. Hex transparencies range 00 - FF. Variable to accommodate colored backgrounds.
-	mTransColor : '(0,0,0,0)',
+	this.mTransColor = '(0,0,0,0)';
 	//* RGBA value of WIP pencil color.
-	mLastPencilColor : '(0,0,0,1)',
+	this.mLastPencilColor = '(0,0,0,1)';
 	//* RGBA value of currently selected color.
-	mSelColor : null,
+	this.mSelColor = null;
 	//* Array of RGBA values of colors used in sprite.
-	mUsedColorArr : [],
+	this.mUsedColorArr = [];
 
 	/**
 	*	Initialize grid with transparent pixels at all locations.
 	**/
-	initPixelArray : function() {
+	this.initPixelArray = function() {
 		var i, j;
 
-		for(i=0; i<frame.mCountPixelsX; i++) {
-			frame.mPxArr[i] = [];
-			for(j=0; j<frame.mCountPixelsY; j++) {
-				frame.mPxArr[i][j] = frame.mTransColor;
+		for(i=0; i<this.mCountPixelsX; i++) {
+			this.mPxArr[i] = [];
+			for(j=0; j<this.mCountPixelsY; j++) {
+				this.mPxArr[i][j] = this.mTransColor;
 			}
 		}
-	},
+	}
 
-	initCanvas : function() {
+	this.initCanvas = function() {
 		console.log('# initCanvas');
 
 		var canvas = document.getElementById('canvas_draw');
-		frame.mContext = canvas.getContext('2d');
-		if(!frame.mContext) {
+		this.mContext = canvas.getContext('2d');
+		if(!this.mContext) {
 			console.log('!! Error: failed to getContext');
 			return;
 		}
 
 		// set sprite pixel size based on number of sprite pixels and width of canvas
-		frame.mPixelSize = $('#canvas_draw').width() / frame.mCountPixelsX;
+		this.mPixelSize = $('#canvas_draw').width() / this.mCountPixelsX;
 
 		// set initial selected color
-		frame.onSelectColor(frame.mLastPencilColor);
+		this.onSelectColor(this.mLastPencilColor);
 
-		$('#canvas_draw').mousemove(function(e) {
-			frame.onMouseMoveOverCanvasDraw(e);
-		});
-		$('#canvas_draw').mousedown(function(e) {
-			frame.mIsMouseDown = true;
-			// console.log(e);
-			frame.onMouseMoveOverCanvasDraw(e);
-		});
-		$(document).mouseup(function() {
-			frame.mIsMouseDown = false;
-		});
-	},
+		$('#canvas_draw').mousemove(
+			$.proxy(this.onMouseMoveOverCanvasDraw, this)
+		);
+		$('#canvas_draw').mousedown(
+			$.proxy(this.onMouseDownOverCanvasDraw, this)
+		);
+		$(document).mouseup(
+			$.proxy(this.onMouseUpOverDoc, this)
+		);
+	}
 
-	initCheckerboard : function() {
+	this.initCheckerboard = function() {
 		var canvas = document.getElementById('canvas_checkerboard');
 		var context = canvas.getContext('2d');
 		if(!context) {
@@ -80,44 +78,48 @@ var frame = {
 
 		var i, j, color;
 
-		for(i=0; i<frame.mCountPixelsX*2; i++) {
-			for(j=0; j<frame.mCountPixelsY*2; j++) {
+		for(i=0; i<this.mCountPixelsX*2; i++) {
+			for(j=0; j<this.mCountPixelsY*2; j++) {
 				if((i+j)%2 == 0) {
-					color = frame.CHECK_LT_COLOR;
+					color = this.CHECK_LT_COLOR;
 				} else {
-					color = frame.CHECK_DK_COLOR;
+					color = this.CHECK_DK_COLOR;
 				}
 				context.fillStyle = 'rgba'+color;
-				context.fillRect(i*frame.mPixelSize/2, j*frame.mPixelSize/2, frame.mPixelSize/2, frame.mPixelSize/2);
+				context.fillRect(i*this.mPixelSize/2, j*this.mPixelSize/2, this.mPixelSize/2, this.mPixelSize/2);
 			}
 		}
-	},
+	}
 
-	initTools : function() {
-		frame.mSelTool = frame.PENCIL;
+	this.initTools = function() {
+		this.mSelTool = this.PENCIL;
 
-		$('#b_tool_pencil').click({toolType: frame.PENCIL}, frame.onToolClick);
-		$('#b_tool_eraser').click({toolType: frame.ERASER}, frame.onToolClick);
-	},
+		$('#b_tool_pencil').click({toolType: this.PENCIL}, this.onToolClick);
+		$('#b_tool_eraser').click({toolType: this.ERASER}, this.onToolClick);
+	}
 
-	initColorPicker : function() {
+	this.initColorPicker = function() {
 		$('.color-box').colpick({
 			layout : 'rgbhex',
 			color : '000000',
-			onSubmit : function(hsb, hex, rgb, el) {
-				$(el).css('background-color', '#'+hex);
-				$(el).colpickHide();
-				frame.onSelectColor('('+rgb.r+','+rgb.g+','+rgb.b+',1)');
-			},
-			onChange: function(hsb, hex, rgb, fromSetColor) {
-				if(fromSetColor) {
-					$('.colpick_submit').click();
-				}
-			}
+			onSubmit : $.proxy(this.onColorPickerSubmit, this),
+			onChange : $.proxy(this.onColorPickerChange, this)
 		});
-	},
+	}
 
-	onMouseMoveOverCanvasDraw : function(e) {
+	this.onColorPickerSubmit = function(hsb, hex, rgb, el) {
+		$(el).css('background-color', '#'+hex);
+		$(el).colpickHide();
+		this.onSelectColor('('+rgb.r+','+rgb.g+','+rgb.b+',1)');
+	}
+
+	this.onColorPickerChange = function(hsb, hex, rgb, fromSetColor) {
+		if(fromSetColor) {
+			$('.colpick_submit').click();
+		}
+	}
+
+	this.onMouseMoveOverCanvasDraw = function(e) {
 		// console.log(e.pageX+', '+e.pageY);
 
 		var x = e.pageX - $(e.target).offset().left;
@@ -125,81 +127,91 @@ var frame = {
 
 		var pxX, pxY;
 
-		if(frame.mIsMouseDown) {
+		if(this.mIsMouseDown) {
 			// changes value in pixel color array
-			pxX = Math.floor(x / frame.mPixelSize);
-			pxY = Math.floor(y / frame.mPixelSize);
+			pxX = Math.floor(x / this.mPixelSize);
+			pxY = Math.floor(y / this.mPixelSize);
 			// console.log(pxX+', '+pxY);
-			frame.mPxArr[pxX][pxY] = frame.mSelColor;
+			this.mPxArr[pxX][pxY] = this.mSelColor;
 
 			// draw sprite pixel
 			// first clear - necessary when using colors with less than full transparency
-			frame.mContext.clearRect(pxX*frame.mPixelSize, pxY*frame.mPixelSize, frame.mPixelSize, frame.mPixelSize);
-			if(frame.mSelTool != frame.ERASER) {
+			this.mContext.clearRect(pxX*this.mPixelSize, pxY*this.mPixelSize, this.mPixelSize, this.mPixelSize);
+			if(this.mSelTool != this.ERASER) {
 				// is frame
-				frame.mContext.fillRect(pxX*frame.mPixelSize, pxY*frame.mPixelSize, frame.mPixelSize, frame.mPixelSize);
+				this.mContext.fillRect(pxX*this.mPixelSize, pxY*this.mPixelSize, this.mPixelSize, this.mPixelSize);
 				
 				// attempt to add color to palette
-				frame.addColorToPalette(frame.mSelColor);
+				this.addColorToPalette(this.mSelColor);
 			}
 		}
-	},
+	}
 
-	onToolClick : function(e) {
-		if(e.data.toolType != frame.mSelTool) {
-			frame.mSelTool = e.data.toolType;
+	this.onMouseDownOverCanvasDraw = function(e) {
+		this.mIsMouseDown = true;
+		this.onMouseMoveOverCanvasDraw(e);
+	}
+
+	this.onMouseUpOverDoc = function(e) {
+		this.mIsMouseDown = false;
+	}
+
+	this.onToolClick = function(e) {
+		if(e.data.toolType != this.mSelTool) {
+			this.mSelTool = e.data.toolType;
 
 			$('.tool-button').removeAttr('disabled');
 
-			switch(frame.mSelTool) {
-				case frame.PENCIL:
-					frame.onSelectColor(frame.mLastPencilColor, false);
+			switch(this.mSelTool) {
+				case this.PENCIL:
+					this.onSelectColor(this.mLastPencilColor, false);
 					$('#b_tool_pencil').attr('disabled','disabled');
 					break;
-				case frame.ERASER:
-					frame.onSelectColor(frame.mTransColor, true);
+				case this.ERASER:
+					this.onSelectColor(this.mTransColor, true);
 					$('#b_tool_eraser').attr('disabled','disabled');
 					break;
 			};
 		}
-	},
+	}
 
-	onSelectColor : function(rgbaStr, isEraser) {
+	this.onSelectColor = function(rgbaStr, isEraser) {
+		console.log('#onSelectColor');
 		if(isEraser) {
-			frame.mLastPencilColor = frame.mSelColor;
+			this.mLastPencilColor = this.mSelColor;
 		}
 
-		frame.mSelColor = rgbaStr;
-		frame.mContext.fillStyle = 'rgba'+rgbaStr;
-	},
+		this.mSelColor = rgbaStr;
+		this.mContext.fillStyle = 'rgba'+rgbaStr;
+	}
 
-	clearCanvas : function(context) {
+	this.clearCanvas = function(context) {
 		context.clearRect(0, 0, 320, 320);
-	},
+	}
 
-	drawCanvasFromPixelArray : function(pxArr, context) {
+	this.drawCanvasFromPixelArray = function(pxArr, context) {
 		var cw = pxArr.length;
 		var ch = pxArr.length;
 		var i,j;
 
 		// clear color palette in preparation of adding colors used in pxArr
-		frame.mUsedColorArr = [];
+		this.mUsedColorArr = [];
 		$('.color-palette').empty();
 
 		for(i=0; i<cw; i++) {
 			for(j=0; j<ch; j++) {
-				frame.mPxArr[i][j] = pxArr[i][j];
+				this.mPxArr[i][j] = pxArr[i][j];
 				context.fillStyle = 'rgba'+pxArr[i][j];
-				context.fillRect(i*frame.mPixelSize, j*frame.mPixelSize, frame.mPixelSize, frame.mPixelSize);
+				context.fillRect(i*this.mPixelSize, j*this.mPixelSize, this.mPixelSize, this.mPixelSize);
 				// add color to palette
-				frame.addColorToPalette(pxArr[i][j]);
+				this.addColorToPalette(pxArr[i][j]);
 			}
 		}
-	},
+	}
 
-	addColorToPalette : function(colorStr) {
-		if(colorStr != frame.mTransColor && frame.mUsedColorArr.indexOf(colorStr) == -1) {
-			frame.mUsedColorArr.push(colorStr);
+	this.addColorToPalette = function(colorStr) {
+		if(colorStr != this.mTransColor && this.mUsedColorArr.indexOf(colorStr) == -1) {
+			this.mUsedColorArr.push(colorStr);
 
 			var $el = $('.color-palette-item.temp').clone();
 			$('.color-palette').append($el);

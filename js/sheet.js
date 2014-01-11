@@ -3,11 +3,13 @@ $(document).ready(function() {
 
 	sheet.initControls();
 
-	frame.initPixelArray();
-	frame.initCansheetvas();
-	frame.initCheckerboard();
-	frame.initTools();
-	frame.initColorPicker();
+	var frameo = new frame();
+
+	frameo.initPixelArray();
+	frameo.initCanvas();
+	frameo.initCheckerboard();
+	frameo.initTools();
+	frameo.initColorPicker();
 });
 
 var sheet = {
