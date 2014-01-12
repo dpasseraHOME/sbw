@@ -3,6 +3,8 @@ function Sheet() {
 	// array of action objects
 	this.mActionsArr = [];
 
+	this.currentActionIndex = -1;
+
 	this.init = function() {
 		console.log('#Sheet.init');
 		this.initControls();
@@ -56,14 +58,20 @@ function Sheet() {
 	}
 
 	this.onNewActionClick = function() {
-		console.log('#onNewActionClick');
-		var action = new Action();
+		var action = new Action(this.mActionsArr.length);
 		this.mActionsArr.push(action);
-		$('#action_container').load('action.html', this.onActionLoadComplete);
+
+		$('#action_thumbnail_container').one('domReady', $.proxy(this.onActionLoadComplete, this));
+		$('#temp_actions').load('action_thumbnail.html', function(){
+			$('#action_thumbnail_container').append($('.action-thumbnail.temp'));
+			$('.action-thumbnail.temp').removeClass('temp');
+		});
 	}
 
 	this.onActionLoadComplete = function() {
-		console.log('ok');
+		$('.inline-js').remove();
+
+		this.mActionsArr[this.mActionsArr.length-1].init();
 	}
 
 };

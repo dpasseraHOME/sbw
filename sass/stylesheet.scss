@@ -42,3 +42,14 @@ canvas
 		position: absolute;
 	}
 }
+
+.action-thumbnail
+{
+	background-color: grey;
+	height: 120px;
+	width: 100%;
+	&:not(:first-child)
+	{
+		margin-top: 10px;
+	}
+}

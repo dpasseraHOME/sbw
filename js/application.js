@@ -16,7 +16,7 @@ $(document).ready(function() {
 
 var application = {
 
-	sheet : {},
+	mSheet : {},
 
 	init : function() {
 		$('#page_container').load('application.html', application.onApplicationLoadComplete);
@@ -35,10 +35,17 @@ var application = {
 	},
 
 	createNewSheet : function() {
-		sheet = new Sheet();
-		$('#page_container').load('sheet.html'/*, sheet.init()*/);
+		application.mSheet = new Sheet();
+		console.log(application.mSheet);
+
+		$('#page_container').one('domReady', /*$.proxy(sheet.init, sheet)*/ application.onDomReady);
+		$('#page_container').load('sheet.html');
 		//TODO: WHY CAN'T I GET AN EVENT WHEN THE DOM IS READY???
-		// Temporary solution is to use inline JS to call init on sheet
+	},
+
+	onDomReady : function() {
+		$('.inline-js').remove();
+		application.mSheet.init();
 	}
 
 }

@@ -38,3 +38,14 @@ canvas {
 .canvas-container > * {
   position: absolute;
 }
+
+/* line 47, ../sass/stylesheet.scss */
+.action-thumbnail {
+  background-color: grey;
+  height: 120px;
+  width: 100%;
+}
+/* line 52, ../sass/stylesheet.scss */
+.action-thumbnail:not(:first-child) {
+  margin-top: 10px;
+}

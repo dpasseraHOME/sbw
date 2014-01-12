@@ -1,7 +1,5 @@
 Next
-w Refactor as object-oriented.
-	c Frame
-	c Action
+w Create multiple actions in sheet.
 - Multiple frames in action.
 	- Save action.
 	- Load action.
