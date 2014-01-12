@@ -1,4 +1,4 @@
-function frame() {
+function Frame() {
 
 	this.PENCIL = 'pencil';
 	this.ERASER = 'eraser';
@@ -96,6 +96,10 @@ function frame() {
 
 		$('#b_tool_pencil').click({toolType: this.PENCIL}, this.onToolClick);
 		$('#b_tool_eraser').click({toolType: this.ERASER}, this.onToolClick);
+	}
+
+	this.initControls = function() {
+		$('#b_toggle_checkerboard').click(this.toggleCheckerboard);
 	}
 
 	this.initColorPicker = function() {
@@ -221,6 +225,16 @@ function frame() {
 			$el.click(function(e) {
 				$('.color-box').colpickSetColor(utils.rgbaStrToRGBObj($(e.target).data('rgba-str')), true);
 			})
+		}
+	}
+
+	this.toggleCheckerboard = function(e) {
+		if($('#canvas_checkerboard').hasClass('hidden')) {
+			$('#canvas_checkerboard').removeClass('hidden');
+			$(e.target).html('Checkerboard off');
+		} else {
+			$('#canvas_checkerboard').addClass('hidden');
+			$(e.target).html('Checkerboard on');
 		}
 	}
 

@@ -1,9 +1,9 @@
-var action = {
+function Action() {
 
 	// array of frame objects
-	mFramesArr : [],
+	this.mFramesArr = [];
 
-	initAction : function() {
+	this.initAction = function() {
 		
 	}
 

@@ -1,10 +1,13 @@
 Next
-c Checkerboard background.
-	c Split each square into quarters.
-w Refactor as object-oriented. Action objects, frame objects.
+w Refactor as object-oriented.
+	c Frame
+	c Action
 - Multiple frames in action.
+	- Save action.
+	- Load action.
 - Front page
 	- Create new sheet.
+	- Save sheet.
 	- Load existing sheet.
 - Sprite sheet front page
 	- Create new action.
@@ -15,9 +18,10 @@ Don't forget
 	- Shift+click to erase, E to switch to eraser tool.
 - User initiated check for orphaned colors in used-color palette.
 - Dropbox integration for sharing and CLOUD!!!!!! features.
+- 
 
 Bugs
-*
+* DOM elements don't exist when Sheet.initControls is called. Need to somehow listen for when sheet.html rendering has completed.
 
 Save data structure
 --------------------

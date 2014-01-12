@@ -13,6 +13,8 @@
 		<script src="js/colpick.js" type="text/javascript"></script>
 		<script src="js/canvas-toBlob.js" type="text/javascript"></script>
 		<script src="js/FileSaver.js" type="text/javascript"></script>
+
+		<script src="js/application.js" type="text/javascript"></script>
 		<script src="js/sheet.js" type="text/javascript"></script>
 		<script src="js/action.js" type="text/javascript"></script>
 		<script src="js/frame.js" type="text/javascript"></script>
@@ -21,32 +23,11 @@
 	</head>
 
 	<body>
-		<div id="container">
-			<p><button class="tool-button" id="b_tool_pencil" disabled="disabled">Pencil</button></p>
-			<p><button class="tool-button" id="b_tool_eraser">Erase</button></p>
 
-			<p><button id="b_save_sheet">Save sprite sheet</button></p>
-			<p><input type="file" id="i_choose_file" name="file" accept=".sbs" /></p>
-
-			<p><button id="b_toggle_checkerboard">Checkerboard off</button></p>
-
-			<div class="color-box"></div>
-
-			<div class="color-palette"></div>
-			<div class="clear-float"></div>
-
-			<div class="canvas-container">
-				<canvas id="canvas_checkerboard" width="320" height="320">
-				</canvas>
-
-				<canvas id="canvas_draw" width="320" height="320">
-					<p>Sorry, but your browser is currently unsupported by Sprite Maker. Please try the latest version of Firefox:</p>
-					<a href="http://www.mozilla.com">Firefox</a>
-				</canvas>
-			</div>
+		<div id="page_container">
+			Loading
 		</div>
-
-		<div class='color-palette-item temp hidden'></div>
+		
 	</body>
 
 </html>

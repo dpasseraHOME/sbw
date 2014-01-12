@@ -1,29 +1,21 @@
-$(document).ready(function() {
-	console.log('!! ready');
-
-	sheet.initControls();
-
-	var frameo = new frame();
-
-	frameo.initPixelArray();
-	frameo.initCanvas();
-	frameo.initCheckerboard();
-	frameo.initTools();
-	frameo.initColorPicker();
-});
-
-var sheet = {
+function Sheet() {
 
 	// array of action objects
-	mActionsArr : [],
+	this.mActionsArr = [];
 
-	initControls : function() {
-		$('#i_choose_file').change(sheet.loadSpriteSheet);
-		$('#b_save_sheet').click(sheet.saveSpriteSheet);
-		$('#b_toggle_checkerboard').click(sheet.toggleCheckerboard);
-	},
+	this.init = function() {
+		console.log('#Sheet.init');
+		this.initControls();
+	}
 
-	saveSpriteSheet : function() {
+	this.initControls = function() {
+		console.log('#Sheet.initControls');
+		$('#i_choose_file').change($.proxy(this.loadSpriteSheet, this));
+		$('#b_save_sheet').click($.proxy(this.saveSpriteSheet, this));
+		$('#b_new_action').click($.proxy(this.onNewActionClick, this));
+	}
+
+	this.saveSpriteSheet = function() {
 		var jsonObj = {};
 
 		jsonObj.metadata = {};
@@ -50,9 +42,9 @@ var sheet = {
 
 		var blob = new Blob([jsonText], {type: "text/plain;charset=utf-8"});
 		saveAs(blob, 'test.sbs');
-	},
+	}
 
-	loadSpriteSheet : function(e) {
+	this.loadSpriteSheet = function(e) {
 		var f = e.target.files[0];
 		var r = new FileReader();
 		r.onload = function(e) {
@@ -61,16 +53,17 @@ var sheet = {
 			frame.drawCanvasFromPixelArray(jsonObj.actions[0].sprites[0].pixel_array, frame.mContext);
 		};
 		r.readAsText(f);
-	},
+	}
 
-	toggleCheckerboard : function(e) {
-		if($('#canvas_checkerboard').hasClass('hidden')) {
-			$('#canvas_checkerboard').removeClass('hidden');
-			$(e.target).html('Checkerboard off');
-		} else {
-			$('#canvas_checkerboard').addClass('hidden');
-			$(e.target).html('Checkerboard on');
-		}
+	this.onNewActionClick = function() {
+		console.log('#onNewActionClick');
+		var action = new Action();
+		this.mActionsArr.push(action);
+		$('#action_container').load('action.html', this.onActionLoadComplete);
+	}
+
+	this.onActionLoadComplete = function() {
+		console.log('ok');
 	}
 
 };
