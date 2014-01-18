@@ -34,7 +34,7 @@ function Sheet() {
 		var sprite = {};
 		sprite.metadata = {};
 		sprite.metadata.name = 'sprite_1';
-		sprite.pixel_array = frame.mPxArr;
+		sprite.pixel_array = sprite.mPxArr;
 
 		action.sprites.push(sprite);
 
@@ -51,8 +51,8 @@ function Sheet() {
 		var r = new FileReader();
 		r.onload = function(e) {
 			var jsonObj = JSON.parse(e.target.result);
-			frame.clearCanvas(frame.mContext);
-			frame.drawCanvasFromPixelArray(jsonObj.actions[0].sprites[0].pixel_array, frame.mContext);
+			sprite.clearCanvas(sprite.mContext);
+			sprite.drawCanvasFromPixelArray(jsonObj.actions[0].sprites[0].pixel_array, sprite.mContext);
 		};
 		r.readAsText(f);
 	}
@@ -62,16 +62,23 @@ function Sheet() {
 		this.mActionsArr.push(action);
 
 		$('#action_thumbnail_container').one('domReady', $.proxy(this.onActionLoadComplete, this));
-		$('#temp_actions').load('action_thumbnail.html', function(){
-			$('#action_thumbnail_container').append($('.action-thumbnail.temp'));
-			$('.action-thumbnail.temp').removeClass('temp');
-		});
+		$('#temp_container').load('action_thumbnail.html');
+
+		try {
+			State.addAction('action_'+State.mSheetObj.actions.length);
+		} catch(err) {
+			State.addAction('action_0');
+		}
 	}
 
 	this.onActionLoadComplete = function() {
 		$('.inline-js').remove();
 
-		this.mActionsArr[this.mActionsArr.length-1].init();
+		$('#action_thumbnail_container').append($('.action-thumbnail.temp'));
+
+		this.mActionsArr[this.mActionsArr.length-1].init($('.action-thumbnail.temp'));
+		
+		$('.action-thumbnail.temp').removeClass('temp');
 	}
 
 };

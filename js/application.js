@@ -3,15 +3,19 @@ $(document).ready(function() {
 
 	/*sheet.initControls();
 
-	var frameo = new frame();
+	var spriteo = new sprite();
 
-	frameo.initPixelArray();
-	frameo.initCanvas();
-	frameo.initCheckerboard();
-	frameo.initTools();
-	frameo.initColorPicker();*/
+	spriteo.initPixelArray();
+	spriteo.initCanvas();
+	spriteo.initCheckerboard();
+	spriteo.initTools();
+	spriteo.initColorPicker();*/
 
 	application.init();
+
+	$(window).on('beforeunload', function() {
+		application.saveState();
+	})
 });
 
 var application = {
@@ -36,16 +40,21 @@ var application = {
 
 	createNewSheet : function() {
 		application.mSheet = new Sheet();
-		console.log(application.mSheet);
 
-		$('#page_container').one('domReady', /*$.proxy(sheet.init, sheet)*/ application.onDomReady);
+		$('#page_container').one('domReady', application.onDomReady);
 		$('#page_container').load('sheet.html');
 		//TODO: WHY CAN'T I GET AN EVENT WHEN THE DOM IS READY???
+
+		State.init();
 	},
 
 	onDomReady : function() {
 		$('.inline-js').remove();
 		application.mSheet.init();
+	},
+
+	saveState : function() {
+		console.log('#application.saveState');
 	}
 
 }

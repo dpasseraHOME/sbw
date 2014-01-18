@@ -1,6 +1,8 @@
 Next
-w Create multiple actions in sheet.
-- Multiple frames in action.
+p Maintain state in sheet json object.
+- Rebuild application, sheet, action, and sprite states on entering or returning to screens.
+- Multiple sprites in action.
+	- On click, position action thumbnail at bottom of screen.
 	- Save action.
 	- Load action.
 - Front page
@@ -15,11 +17,13 @@ Don't forget
 - Hotkeys
 	- Shift+click to erase, E to switch to eraser tool.
 - User initiated check for orphaned colors in used-color palette.
-- Dropbox integration for sharing and CLOUD!!!!!! features.
-- 
+- Figure out how this stuff is going to be saved.  Dropbox?  Text file on local machine?
+	- I think this needs to embrace "real-time" saving to the cloud.
+		- For now, save to server (localhost).
+		- In future, sync with Dropbox periodically.
 
 Bugs
-* DOM elements don't exist when Sheet.initControls is called. Need to somehow listen for when sheet.html rendering has completed.
+* 
 
 Save data structure
 --------------------

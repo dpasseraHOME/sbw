@@ -20,3 +20,13 @@
 2014-01-11 22:29:55 overwrite stylesheets/stylesheet.css 
 2014-01-11 23:19:40 overwrite stylesheets/stylesheet.css 
 2014-01-11 23:19:47 overwrite stylesheets/stylesheet.css 
+2014-01-11 23:34:32 overwrite stylesheets/stylesheet.css 
+2014-01-18 12:14:45     error sass/stylesheet.scss (Line 43: Invalid CSS after "... $canvas-height": expected ";", was "&>*")
+2014-01-18 12:14:45 overwrite stylesheets/stylesheet.css 
+2014-01-18 12:15:01     error sass/stylesheet.scss (Line 4: Invalid CSS after "canvas": expected selector or at-rule, was "{")
+2014-01-18 12:15:01 overwrite stylesheets/stylesheet.css 
+2014-01-18 12:15:03     error sass/stylesheet.scss (Line 45: Invalid CSS after "... $canvas-height": expected ";", was "&>*")
+2014-01-18 12:15:03 overwrite stylesheets/stylesheet.css 
+2014-01-18 12:15:18     error sass/stylesheet.scss (Line 43: Undefined variable: "$canvas-height".)
+2014-01-18 12:15:18 overwrite stylesheets/stylesheet.css 
+2014-01-18 12:15:30 overwrite stylesheets/stylesheet.css 
