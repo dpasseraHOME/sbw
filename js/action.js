@@ -3,9 +3,10 @@ function Action(index) {
 	this.name = 'untitled';
 	this.index = index;
 	this.$element = null;
+	this.isNewAction = true;
 
 	// array of sprite objects
-	this.mSpritesArr = [];
+	this.spritesArr = [];
 
 	this.init = function($element) {
 		// $element is the DOM element which this instanct of Action controls
@@ -20,19 +21,26 @@ function Action(index) {
 	}
 
 	this.onMouseClick = function() {
-		var sprite = new Sprite(this.mSpritesArr.length);
-		this.mSpritesArr.push(sprite);
+		if(this.spritesArr.length < 1) {
+			// open action with new, blank sprite
+			var sprite = new Sprite(0, this.index);
+			this.spritesArr.push(sprite);
+			State.addSprite(this.index);
 
-		$('#temp_container').append(this.$element);
+			$('#temp_container').append(this.$element);
 
-		$('#page_container').one('domReady', $.proxy(this.onDomReady, this));
-		$('#page_container').load('sprite.html');
+			$('#page_container').one('domReady', $.proxy(this.onDomReady, this));
+			$('#page_container').load('sprite.html');
+		}
 	}
 
 	this.onDomReady = function() {
 		$('.inline-js').remove();
 
-		this.mSpritesArr[this.mSpritesArr.length-1].init();
+		if(this.isNewAction) {
+			this.spritesArr[0].init();
+		}
+
 		$('#page_container').append(this.$element);
 	}
 

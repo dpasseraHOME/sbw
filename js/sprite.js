@@ -1,4 +1,7 @@
-function Sprite() {
+function Sprite(index, actionIndex) {
+
+	this.index = index;
+	this.actionIndex = actionIndex;
 
 	this.PENCIL = 'pencil';
 	this.ERASER = 'eraser';
@@ -6,27 +9,27 @@ function Sprite() {
 	this.CHECK_LT_COLOR = '(254,254,254,1)';
 	this.CHECK_DK_COLOR = '(201,201,201,1)';
 
-	this.mContext = null;
-	this.mIsLineStarted = false;
-	this.mIsMouseDown = false;
+	this.context = null;
+	this.isLineStarted = false;
+	this.isMouseDown = false;
 	//* Number of sprite 'pixels' wide and high.
-	this.mCountPixelsX = 32;
-	this.mCountPixelsY = 32;
+	this.countPixelsX = 32;
+	this.countPixelsY = 32;
 	//* Number of screen pixels per sprite 'pixel'.
-	this.mPixelSize = 10;
+	this.pixelSize = 10;
 
-	this.mSelTool = null;
+	this.selTool = null;
 
 	//* 3D array representing the pixel grid.
-	this.mPxArr = [];
+	this.pxArr = [];
 	//* RGBA value of transparent (erased) color. Hex transparencies range 00 - FF. Variable to accommodate colored backgrounds.
-	this.mTransColor = '(0,0,0,0)';
+	this.transColor = '(0,0,0,0)';
 	//* RGBA value of WIP pencil color.
-	this.mLastPencilColor = '(0,0,0,1)';
+	this.lastPencilColor = '(0,0,0,1)';
 	//* RGBA value of currently selected color.
-	this.mSelColor = null;
+	this.selColor = null;
 	//* Array of RGBA values of colors used in sprite.
-	this.mUsedColorArr = [];
+	this.usedColorArr = [];
 
 	this.init = function() {
 		this.initPixelArray();
@@ -43,10 +46,10 @@ function Sprite() {
 	this.initPixelArray = function() {
 		var i, j;
 
-		for(i=0; i<this.mCountPixelsX; i++) {
-			this.mPxArr[i] = [];
-			for(j=0; j<this.mCountPixelsY; j++) {
-				this.mPxArr[i][j] = this.mTransColor;
+		for(i=0; i<this.countPixelsX; i++) {
+			this.pxArr[i] = [];
+			for(j=0; j<this.countPixelsY; j++) {
+				this.pxArr[i][j] = this.transColor;
 			}
 		}
 	}
@@ -55,17 +58,17 @@ function Sprite() {
 		console.log('# initCanvas');
 
 		var canvas = document.getElementById('canvas_draw');
-		this.mContext = canvas.getContext('2d');
-		if(!this.mContext) {
+		this.context = canvas.getContext('2d');
+		if(!this.context) {
 			console.log('!! Error: failed to getContext');
 			return;
 		}
 
 		// set sprite pixel size based on number of sprite pixels and width of canvas
-		this.mPixelSize = $('#canvas_draw').width() / this.mCountPixelsX;
+		this.pixelSize = $('#canvas_draw').width() / this.countPixelsX;
 
 		// set initial selected color
-		this.onSelectColor(this.mLastPencilColor);
+		this.onSelectColor(this.lastPencilColor);
 
 		$('#canvas_draw').mousemove(
 			$.proxy(this.onMouseMoveOverCanvasDraw, this)
@@ -87,21 +90,21 @@ function Sprite() {
 
 		var i, j, color;
 
-		for(i=0; i<this.mCountPixelsX*2; i++) {
-			for(j=0; j<this.mCountPixelsY*2; j++) {
+		for(i=0; i<this.countPixelsX*2; i++) {
+			for(j=0; j<this.countPixelsY*2; j++) {
 				if((i+j)%2 == 0) {
 					color = this.CHECK_LT_COLOR;
 				} else {
 					color = this.CHECK_DK_COLOR;
 				}
 				context.fillStyle = 'rgba'+color;
-				context.fillRect(i*this.mPixelSize/2, j*this.mPixelSize/2, this.mPixelSize/2, this.mPixelSize/2);
+				context.fillRect(i*this.pixelSize/2, j*this.pixelSize/2, this.pixelSize/2, this.pixelSize/2);
 			}
 		}
 	}
 
 	this.initTools = function() {
-		this.mSelTool = this.PENCIL;
+		this.selTool = this.PENCIL;
 
 		$('#b_tool_pencil').click({toolType: this.PENCIL}, $.proxy(this.onToolClick, this));
 		$('#b_tool_eraser').click({toolType: this.ERASER}, $.proxy(this.onToolClick, this));
@@ -140,48 +143,50 @@ function Sprite() {
 
 		var pxX, pxY;
 
-		if(this.mIsMouseDown) {
+		if(this.isMouseDown) {
 			// changes value in pixel color array
-			pxX = Math.floor(x / this.mPixelSize);
-			pxY = Math.floor(y / this.mPixelSize);
+			pxX = Math.floor(x / this.pixelSize);
+			pxY = Math.floor(y / this.pixelSize);
 			// console.log(pxX+', '+pxY);
-			this.mPxArr[pxX][pxY] = this.mSelColor;
+			this.pxArr[pxX][pxY] = this.selColor;
 
 			// draw sprite pixel
 			// first clear - necessary when using colors with less than full transparency
-			this.mContext.clearRect(pxX*this.mPixelSize, pxY*this.mPixelSize, this.mPixelSize, this.mPixelSize);
-			if(this.mSelTool != this.ERASER) {
+			this.context.clearRect(pxX*this.pixelSize, pxY*this.pixelSize, this.pixelSize, this.pixelSize);
+			if(this.selTool != this.ERASER) {
 				// is sprite
-				this.mContext.fillRect(pxX*this.mPixelSize, pxY*this.mPixelSize, this.mPixelSize, this.mPixelSize);
+				this.context.fillRect(pxX*this.pixelSize, pxY*this.pixelSize, this.pixelSize, this.pixelSize);
 				
 				// attempt to add color to palette
-				this.addColorToPalette(this.mSelColor);
+				this.addColorToPalette(this.selColor);
 			}
 		}
 	}
 
 	this.onMouseDownOverCanvasDraw = function(e) {
-		this.mIsMouseDown = true;
+		this.isMouseDown = true;
 		this.onMouseMoveOverCanvasDraw(e);
 	}
 
 	this.onMouseUpOverDoc = function(e) {
-		this.mIsMouseDown = false;
+		this.isMouseDown = false;
+
+		State.updateSprite(this.pxArr, this.index, this.actionIndex);
 	}
 
 	this.onToolClick = function(e) {
-		if(e.data.toolType != this.mSelTool) {
-			this.mSelTool = e.data.toolType;
+		if(e.data.toolType != this.selTool) {
+			this.selTool = e.data.toolType;
 
 			$('.tool-button').removeAttr('disabled');
 
-			switch(this.mSelTool) {
+			switch(this.selTool) {
 				case this.PENCIL:
-					this.onSelectColor(this.mLastPencilColor, false);
+					this.onSelectColor(this.lastPencilColor, false);
 					$('#b_tool_pencil').attr('disabled','disabled');
 					break;
 				case this.ERASER:
-					this.onSelectColor(this.mTransColor, true);
+					this.onSelectColor(this.transColor, true);
 					$('#b_tool_eraser').attr('disabled','disabled');
 					break;
 			};
@@ -191,11 +196,11 @@ function Sprite() {
 	this.onSelectColor = function(rgbaStr, isEraser) {
 		// console.log('#onSelectColor');
 		if(isEraser) {
-			this.mLastPencilColor = this.mSelColor;
+			this.lastPencilColor = this.selColor;
 		}
 
-		this.mSelColor = rgbaStr;
-		this.mContext.fillStyle = 'rgba'+rgbaStr;
+		this.selColor = rgbaStr;
+		this.context.fillStyle = 'rgba'+rgbaStr;
 	}
 
 	this.clearCanvas = function(context) {
@@ -208,14 +213,14 @@ function Sprite() {
 		var i,j;
 
 		// clear color palette in preparation of adding colors used in pxArr
-		this.mUsedColorArr = [];
+		this.usedColorArr = [];
 		$('.color-palette').empty();
 
 		for(i=0; i<cw; i++) {
 			for(j=0; j<ch; j++) {
-				this.mPxArr[i][j] = pxArr[i][j];
+				this.pxArr[i][j] = pxArr[i][j];
 				context.fillStyle = 'rgba'+pxArr[i][j];
-				context.fillRect(i*this.mPixelSize, j*this.mPixelSize, this.mPixelSize, this.mPixelSize);
+				context.fillRect(i*this.pixelSize, j*this.pixelSize, this.pixelSize, this.pixelSize);
 				// add color to palette
 				this.addColorToPalette(pxArr[i][j]);
 			}
@@ -223,8 +228,8 @@ function Sprite() {
 	}
 
 	this.addColorToPalette = function(colorStr) {
-		if(colorStr != this.mTransColor && this.mUsedColorArr.indexOf(colorStr) == -1) {
-			this.mUsedColorArr.push(colorStr);
+		if(colorStr != this.transColor && this.usedColorArr.indexOf(colorStr) == -1) {
+			this.usedColorArr.push(colorStr);
 
 			var $el = $('.color-palette-item.temp').clone();
 			$('.color-palette').append($el);

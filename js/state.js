@@ -1,11 +1,12 @@
 var State = {
 
-	mSheetObj : {},
+	sheetObj : {},
 
 	init : function() {
-		State.mSheetObj = {};
-		State.mSheetObj.metaData = {};
-		State.mSheetObj.actions = [];
+		console.log('#State.init');
+		State.sheetObj = {};
+		State.sheetObj.metaData = {};
+		State.sheetObj.actions = [];
 	},
 
 	addAction : function(nameStr) {
@@ -14,23 +15,23 @@ var State = {
 		action.metadata.name = nameStr;
 		action.sprites = [];
 
-		State.mSheetObj.actions.push(action);
+		State.sheetObj.actions.push(action);
 	},
 
 	removeAction : function() {
 		//TODO:
 	},
 
-	addSprite : function(pixelArr, actionIndex) {
+	addSprite : function(actionIndex) {
 		var sprite = {};
 		sprite.metadata = {};
-		sprite.pixel_array = pixelArr;
+		sprite.pixel_array = [];
 
-		State.mSheetObj.actions[actionIndex].sprites.push(sprite);
+		State.sheetObj.actions[actionIndex].sprites.push(sprite);
 	},
 
 	updateSprite : function(pixelArr, spriteIndex, actionIndex) {
-		State.mSheetObj.actions[actionIndex].sprites[spriteIndex].pixel_array = pixelArr;
+		State.sheetObj.actions[actionIndex].sprites[spriteIndex].pixel_array = pixelArr;
 	},
 
 	removeSprite : function() {

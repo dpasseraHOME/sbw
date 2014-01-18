@@ -34,7 +34,7 @@ function Sheet() {
 		var sprite = {};
 		sprite.metadata = {};
 		sprite.metadata.name = 'sprite_1';
-		sprite.pixel_array = sprite.mPxArr;
+		sprite.pixel_array = sprite.pxArr;
 
 		action.sprites.push(sprite);
 
@@ -51,8 +51,8 @@ function Sheet() {
 		var r = new FileReader();
 		r.onload = function(e) {
 			var jsonObj = JSON.parse(e.target.result);
-			sprite.clearCanvas(sprite.mContext);
-			sprite.drawCanvasFromPixelArray(jsonObj.actions[0].sprites[0].pixel_array, sprite.mContext);
+			sprite.clearCanvas(sprite.context);
+			sprite.drawCanvasFromPixelArray(jsonObj.actions[0].sprites[0].pixel_array, sprite.context);
 		};
 		r.readAsText(f);
 	}
@@ -65,9 +65,9 @@ function Sheet() {
 		$('#temp_container').load('action_thumbnail.html');
 
 		try {
-			State.addAction('action_'+State.mSheetObj.actions.length);
+			State.addAction(State.sheetObj.actions.length);
 		} catch(err) {
-			State.addAction('action_0');
+			State.addAction(0);
 		}
 	}
 

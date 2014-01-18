@@ -47,10 +47,22 @@ canvas {
 .action-thumbnail {
   background-color: grey;
   cursor: pointer;
-  height: 120px;
+  padding: 10px;
   width: 100%;
 }
 /* line 58, ../sass/stylesheet.scss */
 .action-thumbnail:not(:first-child) {
   margin-top: 10px;
+}
+
+/* line 64, ../sass/stylesheet.scss */
+.sprite-thumbnail {
+  background-color: white;
+  border: 1px solid black;
+  height: 100px;
+  width: 100px;
+}
+/* line 70, ../sass/stylesheet.scss */
+.sprite-thumbnail:not(:first-child) {
+  margin-left: 10px;
 }

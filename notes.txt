@@ -1,8 +1,7 @@
 Next
 p Maintain state in sheet json object.
 - Rebuild application, sheet, action, and sprite states on entering or returning to screens.
-- Multiple sprites in action.
-	- On click, position action thumbnail at bottom of screen.
+w Multiple sprites in action.
 	- Save action.
 	- Load action.
 - Front page
