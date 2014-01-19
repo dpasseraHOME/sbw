@@ -1,16 +1,10 @@
 Next
 p Maintain state in sheet json object.
 - Rebuild application, sheet, action, and sprite states on entering or returning to screens.
-w Multiple sprites in action.
-	- Save action.
-	- Load action.
-- Front page
-	- Create new sheet.
-	- Save sheet.
-	- Load existing sheet.
-- Sprite sheet front page
-	- Create new action.
-	- Edit existing action.
+p Multiple sprites in action.
+	- Add sprite.
+	- Navigate between sprites.
+w Click sprite thumbnail, not action thumbnail.
 
 Don't forget
 - Hotkeys

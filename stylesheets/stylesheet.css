@@ -46,21 +46,21 @@ canvas {
 /* line 52, ../sass/stylesheet.scss */
 .action-thumbnail {
   background-color: grey;
-  cursor: pointer;
   padding: 10px;
   width: 100%;
 }
-/* line 58, ../sass/stylesheet.scss */
+/* line 57, ../sass/stylesheet.scss */
 .action-thumbnail:not(:first-child) {
   margin-top: 10px;
 }
 
-/* line 64, ../sass/stylesheet.scss */
+/* line 63, ../sass/stylesheet.scss */
 .sprite-thumbnail {
   background-color: white;
   border: 1px solid black;
-  height: 100px;
-  width: 100px;
+  cursor: pointer;
+  height: 96px;
+  width: 96px;
 }
 /* line 70, ../sass/stylesheet.scss */
 .sprite-thumbnail:not(:first-child) {
