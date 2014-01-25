@@ -9,12 +9,13 @@ function Action(index) {
 	this.spritesArr = [];
 	this.spriteThumbArr = [];
 
+	this.curSpriteIndex = 1;
+
 	this.init = function($element) {
 		// $element is the DOM element which this instance of Action controls
 		this.$element = $element;
 
 		$(this.$element).on("mouseover", $.proxy(this.onMouseOver, this));
-		// $(this.$element).click($.proxy(this.onMouseClick, this));
 
 		this.addNewSprite();
 
@@ -31,18 +32,6 @@ function Action(index) {
 	this.onMouseOver = function() {
 		// console.log('#onMouseOver : '+this.index);
 	};
-
-	/*this.onMouseClick = function() {
-		if(this.spritesArr.length < 1) {
-			// open action with new, blank sprite
-			this.addNewSprite();
-
-			$('#temp_container').append(this.$element);
-
-			$('#page_container').one('domReady', $.proxy(this.onDomReady, this));
-			$('#page_container').load('sprite.html');
-		}
-	};*/
 
 	this.onDomReady = function() {
 		$('.inline-js').remove();
@@ -61,10 +50,11 @@ function Action(index) {
 		State.addSprite(this.index);
 
 		this.addNewSpriteThumbnail();
+		this.updateSpriteCount();
 	};
 
 	this.addNewSpriteThumbnail = function() {
-		var $spriteThumb = $('.sprite-thumbnail.temp').clone().appendTo('.action-thumbnail').removeClass('temp').removeClass('hidden');
+		var $spriteThumb = $('.sprite-thumbnail.temp').clone().appendTo('.sprite-thumbnail-group').removeClass('temp').removeClass('hidden');
 		var spriteThumb = new SpriteThumbnail(this.spriteThumbArr.length, $spriteThumb);
 
 		$($spriteThumb).on('spriteThumbClick', $.proxy(this.onSpriteThumbClick, this));
@@ -73,7 +63,10 @@ function Action(index) {
 
 	this.onSpriteThumbClick = function(e, index) {
 		console.log('#onSpriteThumbClick '+index);
-		$('#temp_container').append(this.$element);
+
+		this.curSpriteIndex = index;
+
+		$('#temp_container').append($(this.$element));
 
 		$('#page_container').one('domReady', $.proxy(this.onDomReady, this));
 		$('#page_container').load('sprite.html');
@@ -84,15 +77,19 @@ function Action(index) {
 	};
 
 	this.onNextSpriteClick = function() {
-		this.addNewSprite();
+		
 	};
 
 	this.onNewSpriteClick = function() {
-
+		this.addNewSprite();
 	};
 
 	this.onPlayActionClick = function() {
 
+	};
+
+	this.updateSpriteCount = function() {
+		$('.sprite-count').html('Sprite '+(this.curSpriteIndex+1)+' of '+this.spritesArr.length);
 	};
 
 };

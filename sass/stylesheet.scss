@@ -59,11 +59,22 @@ canvas
 	}
 }
 
+.sprite-thumbnail-group
+{
+	&:after
+	{
+		content: '';
+		display: table;
+		clear: both;
+	}
+}
+
 .sprite-thumbnail
 {
 	background-color: white;
 	border: 1px solid black;
 	cursor: pointer;
+	float: left;
 	height: 96px;
 	width: 96px;
 	&:not(:first-child)

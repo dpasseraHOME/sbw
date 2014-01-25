@@ -1,10 +1,10 @@
 Next
 p Maintain state in sheet json object.
 - Rebuild application, sheet, action, and sprite states on entering or returning to screens.
-p Multiple sprites in action.
-	- Add sprite.
+w Multiple sprites in action.
+	w Add additional sprite.
+		* Action thumbnail is being removed from the DOM when the sprite is loaded into page container. Shift into temp container first.
 	- Navigate between sprites.
-w Click sprite thumbnail, not action thumbnail.
 
 Don't forget
 - Hotkeys

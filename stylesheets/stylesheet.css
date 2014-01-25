@@ -54,15 +54,23 @@ canvas {
   margin-top: 10px;
 }
 
-/* line 63, ../sass/stylesheet.scss */
+/* line 65, ../sass/stylesheet.scss */
+.sprite-thumbnail-group:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+/* line 73, ../sass/stylesheet.scss */
 .sprite-thumbnail {
   background-color: white;
   border: 1px solid black;
   cursor: pointer;
+  float: left;
   height: 96px;
   width: 96px;
 }
-/* line 70, ../sass/stylesheet.scss */
+/* line 81, ../sass/stylesheet.scss */
 .sprite-thumbnail:not(:first-child) {
   margin-left: 10px;
 }
